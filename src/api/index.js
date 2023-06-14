@@ -94,6 +94,7 @@ export const getRoutinesByUsername = async (token, username) => {
   export const getActivities = async () => {
     try {
       const response = await fetch(`${BASE_URL}/activities`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
