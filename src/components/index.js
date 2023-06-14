@@ -1,1 +1,1 @@
-export { default as GetActivities } from "./activities"
+export { default as GetActivities } from "./viewActivities"
