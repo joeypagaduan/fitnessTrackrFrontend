@@ -5,14 +5,20 @@ import { useHistory } from 'react-router-dom';
 const Login = ({ setToken, token }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
     const history = useHistory()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await login(username, password, token);
-    if (response && response.data && response.data.token) {
-      setToken(response.data.token);
-      history.push('/')
+    setError(''); 
+    try {
+      const response = await login(username, password, token);
+      if (response && response.data && response.data.token) {
+        setToken(response.data.token);
+        history.push('/');
+      }
+    } catch (error) {
+      setError('Invalid username or password. Please try again.'); 
     }
   };
 
@@ -42,6 +48,7 @@ const Login = ({ setToken, token }) => {
         />
       </div>
       <button type="submit">Login</button>
+      {error && <p className="error-message">{error}</p>} 
     </form>
   );
 };

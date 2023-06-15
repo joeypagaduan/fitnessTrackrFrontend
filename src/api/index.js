@@ -9,7 +9,7 @@ export const registerUser = async (username, password) => {
            method: "POST",
            headers: {
              'Content-Type': 'application/json',
-            //  'Authorization': `Bearer ${token}`
+          
            },
            body: JSON.stringify({
              
@@ -30,22 +30,21 @@ export const registerUser = async (username, password) => {
 
 //POST/users/login
 
-export const login = async (username, password, token) => {
+export const login = async (username, password) => {
       
     try {
       const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+    
           
         },
         body: JSON.stringify({
-            user: {
+            
                 username,
                 password,
-              }
-            
+              
         })
       });
       const result = await response.json();
