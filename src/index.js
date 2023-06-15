@@ -43,14 +43,15 @@ const handleLogout = () => {
         <Link to='/activities'>Activities</Link>
         <Link to='/routines'>Routines</Link>
         <Link to='/my-routines'>My Routines</Link>
-        {token ? (
+        
+        {/* {token ? (
           <button onClick={handleLogout}>Logout</button>
         ) : (
           <>
             <Link to='/users/register'>Register</Link>
             <Link to='/users/login'>Login</Link>
           </>
-        )}
+        )} */}
             
         </nav>
         <Router>
