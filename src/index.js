@@ -31,15 +31,27 @@ useEffect(() => {
     getActivities();
 }, [token]);
 
+const handleLogout = () => {
+  setToken('');
+  setUser(null);
+};
+
   return (
     <div className='app'>
-        <nav className='navbar'>
-            <Link to='/'>Home</Link>
-            <Link to='/activities'>Activities</Link>
-            <Link to='/routines'>Routines</Link>
-            <Link to='/my-routines'>My Routines</Link>
+    <nav className='navbar'>
+        <Link to='/'>Home</Link>
+        <Link to='/activities'>Activities</Link>
+        <Link to='/routines'>Routines</Link>
+        <Link to='/my-routines'>My Routines</Link>
+        {token ? (
+          <button onClick={handleLogout}>Logout</button>
+        ) : (
+          <>
             <Link to='/users/register'>Register</Link>
             <Link to='/users/login'>Login</Link>
+          </>
+        )}
+            
         </nav>
         <Router>
             <Switch>
