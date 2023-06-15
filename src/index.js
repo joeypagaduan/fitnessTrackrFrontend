@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token')??'');
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
 
@@ -30,7 +30,6 @@ const App = () => {
 useEffect(() => {
     getActivities();
 }, [token]);
-
 
   return (
     <div className='app'>
