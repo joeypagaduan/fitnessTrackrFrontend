@@ -6,19 +6,29 @@ const Register = ({ setToken, token }) => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); 
+    setError('');
+    setSuccess(false);
+    
     if (password !== passwordConfirmation) {
       setError("Password and password confirmation don't match");
       return;
     }
 
     
-    const response = await registerUser(username, password, token);
-    if (response && response.data && response.data.token) {
-      setToken(response.data.token);
+    try {
+      const response = await registerUser(username, password);
+      console.log(username)
+      if ( response.token) {
+        setToken(response.token);
+        setSuccess(true);
+        console.log('success')
+      }
+    } catch (error) {
+      setError('An error occurred during registration. Please try again.');
     }
   };
 
@@ -59,6 +69,7 @@ const Register = ({ setToken, token }) => {
       </div>
       <button type="submit">Register</button>
       {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">Registration successful!</p>}
     </form>
   );
 };
