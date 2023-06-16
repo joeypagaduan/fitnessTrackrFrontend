@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import { callAPI } from './api';
+import { callAPI, myData } from './api';
 
 import {
   Home,
-  ViewActivities
+  ViewActivities,
+  Register, 
+  Login,
 } from "./components"
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token')??'');
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
 
   const getActivities = async () => {
-      const data = await callAPI({
-          path: "/activities", token
-      })
+    const data = await callAPI({
+        path: "/activities", token
+    })
 
-      if (data?.activities) {
-          setActivities(data.activities);
-      }
-  }
+    if (data?.activities) {
+        setActivities(data.activities);
+    }
+}
 
-  useEffect(() => {
-      getActivities();
-  }, [token]);
-
+useEffect(() => {
+    getActivities();
+}, [token]);
 
   return (
     <div className='app'>
@@ -37,8 +38,8 @@ const App = () => {
             <Link to='/activities'>Activities</Link>
             <Link to='/routines'>Routines</Link>
             <Link to='/my-routines'>My Routines</Link>
-            <Link to='/register'>Register</Link>
-            <Link to='/login'>Login</Link>
+            <Link to='/users/register'>Register</Link>
+            <Link to='/users/login'>Login</Link>
         </nav>
         <Router>
             <Switch>
@@ -48,6 +49,14 @@ const App = () => {
               </Route>
               <Route path='/activities' render={(props) => (
                   <ViewActivities />
+              )}>
+              </Route>
+              <Route path='/users/register' render={(props) => (
+                  <Register setToken={setToken} />
+              )}>
+              </Route>
+              <Route path='/users/login' render={(props) => (
+                  <Login login={login} setToken={setToken} token={token}/>
               )}>
               </Route>
               {/* <Route path="/activities/:post_Id">
