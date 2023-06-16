@@ -13,14 +13,17 @@ const Login = ({ setToken, token }) => {
     setError(''); 
     try {
       const response = await login(username, password, token);
-      if (response && response.data && response.data.token) {
-        setToken(response.data.token);
+      if (response && response.token) {
+        setToken(response.token);
         history.push('/');
+      } else {
+        setError('Invalid username or password. Please try again.');
       }
     } catch (error) {
-      setError('Invalid username or password. Please try again.'); 
+      setError('An error occurred during login. Please try again.');
     }
   };
+
 
   return (
 

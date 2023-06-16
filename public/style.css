@@ -1,5 +1,6 @@
-/* .error-message {
-    color: red;
-    font-weight: bold;
-  } */
+.error-message {
+    color: #dd3927;
+    margin-top: 8px;
+    font-size: 14px;
+  }
 
