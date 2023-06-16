@@ -12,8 +12,8 @@ const Login = ({ setToken, token }) => {
     event.preventDefault();
     setError(''); 
     try {
-      const response = await login(username, password, token);
-      if (response && response.token) {
+      const response = await login(username, password);
+      if (response.token) {
         setToken(response.token);
         history.push('/');
       } else {

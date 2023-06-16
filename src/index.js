@@ -34,6 +34,10 @@ const App = () => {
     getActivities();
   }, [token]);
 
+  // stay logged in between page visits
+  useEffect(() => {localStorage.setItem('token', token )},
+  [token]);
+
   const handleLogout = () => {
     setToken('');
     setUser(null);
