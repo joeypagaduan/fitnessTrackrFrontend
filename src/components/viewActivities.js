@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getActivities } from "../api";
+import { Link } from 'react-router-dom';
 
 const ViewActivities = (props) => {
     const [activities, setActivities] = useState([]);
@@ -18,13 +19,16 @@ const ViewActivities = (props) => {
     return (
         <div>
             <h1>Activities</h1>
+            {/* addActivity to be viewed */}
+            <Link to="/addActivity">Add Activity</Link>
+            
             <div className="activity-list"></div>
             <div>{activities.map((activity, index) => {
                 return (
                     <div key={activity.id} className="activity-item">
-                        <div>{activity.id}</div>
-                        <div>{activity.name}</div>
-                        <div>{activity.description}</div>
+                        <div>ID: {activity.id}</div>
+                        <div>Name: {activity.name}</div>
+                        <div>Description: {activity.description}</div>
                     </div>
                 )
             })}

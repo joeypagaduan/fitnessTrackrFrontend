@@ -8,6 +8,7 @@ import {
   ViewActivities,
   Register,
   Login,
+  AddActivity,
 } from "./components"
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -84,6 +85,12 @@ const App = () => {
               <Login login={Login} setToken={setToken} token={token} setUser = {setUser}/>
             </Route>
           )}
+          
+         {/* link to addActivity  */}
+         
+          <Route exact path='/addActivity' render={(props) => (
+            <AddActivity token={token} />
+          )}></Route>
           {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
