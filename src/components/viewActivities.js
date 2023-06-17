@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getActivities } from "../api";
+import AddActivity from "./addActivity";
 
-const ViewActivities = (props) => {
+const ViewActivities = ({props, token}) => {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -17,10 +18,11 @@ const ViewActivities = (props) => {
 
     return (
         <div>
+            {token && <AddActivity token={token} getActivities={getActivities} /> }
             <h1>Activities</h1>
             <div>{activities.map((activity, index) => {
                 return (
-                    <div>
+                    <div className="activitiesDiv">
                         <div>{activity.id}</div>
                         <div>{activity.name}</div>
                         <div>{activity.description}</div>
