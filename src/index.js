@@ -8,6 +8,7 @@ import {
   ViewActivities,
   Register,
   Login,
+  AddActivity,
 } from "./components"
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -31,6 +32,17 @@ const App = () => {
   useEffect(() => {
     //fetch the user and call set user. 
 
+    const fetchUser = async () => {
+      try {
+        const response = await getUser(token);
+        if (response && response.data && response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUser();
     getActivities();
   }, [token]);
 
@@ -73,6 +85,12 @@ const App = () => {
               <Login login={Login} setToken={setToken} token={token} setUser = {setUser}/>
             </Route>
           )}
+          
+         {/* link to addActivity  */}
+         
+          <Route exact path='/addActivity' render={(props) => (
+            <AddActivity token={token} />
+          )}></Route>
           {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
