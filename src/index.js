@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import { callAPI, myData } from './api';
+import { callAPI, login, myData } from './api';
+
 
 import {
   Home,
@@ -34,21 +35,23 @@ const App = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await getUser(token);
+        const response = await setUser(token);
         if (response && response.data && response.data.user) {
           setUser(response.data.user);
+         
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
+
     fetchUser();
     getActivities();
   }, [token]);
 
   // stay logged in between page visits
-  useEffect(() => {localStorage.setItem('token', token )},
-  [token]);
+  useEffect(() => { localStorage.setItem('token', token) },
+    [token]);
 
   const handleLogout = () => {
     setToken('');
@@ -74,6 +77,7 @@ const App = () => {
             <ViewActivities />
           )}>
           </Route>
+
           {!token ? (
             <Route path='/users/register'>
               <Register setToken={setToken} />
@@ -82,15 +86,23 @@ const App = () => {
 
           {!token && (
             <Route path='/users/login'>
-              <Login login={Login} setToken={setToken} token={token} setUser = {setUser}/>
+              <Login login={Login} setToken={setToken} token={token} setUser={setUser} />
             </Route>
           )}
-          
-         {/* link to addActivity  */}
-         
+
+          {/* link to addActivity  */}
+
           <Route exact path='/addActivity' render={(props) => (
             <AddActivity token={token} />
           )}></Route>
+
+         {/* only show my routines after log in */}
+
+         {token &&(<Route path='/my-routines'>
+            <myRoutines />
+          </Route>)} 
+          
+
           {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
