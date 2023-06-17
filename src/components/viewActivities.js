@@ -18,9 +18,10 @@ const ViewActivities = (props) => {
     return (
         <div>
             <h1>Activities</h1>
+            <div className="activity-list"></div>
             <div>{activities.map((activity, index) => {
                 return (
-                    <div>
+                    <div key={activity.id} className="activity-item">
                         <div>{activity.id}</div>
                         <div>{activity.name}</div>
                         <div>{activity.description}</div>

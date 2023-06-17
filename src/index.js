@@ -31,6 +31,17 @@ const App = () => {
   useEffect(() => {
     //fetch the user and call set user. 
 
+    const fetchUser = async () => {
+      try {
+        const response = await getUser(token);
+        if (response && response.data && response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUser();
     getActivities();
   }, [token]);
 
