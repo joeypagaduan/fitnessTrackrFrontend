@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { callAPI } from '../api';
 
-const AddActivity = ({token, fetchActivities}) => {
+const AddActivity = ({token, getActivities}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
@@ -24,7 +24,7 @@ const AddActivity = ({token, fetchActivities}) => {
         if (activity) {
             setName('');
             setDescription('');
-            await fetchActivities();
+            await getActivities();
         }
     }
 
