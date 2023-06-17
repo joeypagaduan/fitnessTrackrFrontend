@@ -9,18 +9,16 @@ const AddActivity = ({token, getActivities}) => {
     const AddActivity = async (event) => {
         event.preventDefault();
 
-        const responseData = await callAPI({
+        const activity = await callAPI({
             path: '/activities',
             method: "post",
             token,
             body: {
-                activity: {
                     name,
-                    description,
-                }
+                    description
             }
         });
-        const {activity} = responseData;
+
         if (activity) {
             setName('');
             setDescription('');
