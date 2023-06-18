@@ -38,7 +38,7 @@ const App = () => {
       try {
         const response = await setUser(token);
         if (response && response.data && response.data.user) {
-          setUser(response.data.user); 
+          setUser(response.data.user);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -65,7 +65,6 @@ const App = () => {
         <Link to="/">Home</Link>
         <Link to="/activities">Activities</Link>
         <Link to="/routines">Routines</Link>
-        <Link to="/my-routines">My Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
       <Router>
@@ -79,6 +78,7 @@ const App = () => {
             path="/activities"
             render={(props) => <ViewActivities />}
           ></Route>
+
           {!token ? (
             <Route path="/users/register">
               <Register setToken={setToken} />
@@ -103,6 +103,7 @@ const App = () => {
             path="/addActivity"
             render={(props) => <AddActivity token={token} />}
           ></Route>
+
           {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}

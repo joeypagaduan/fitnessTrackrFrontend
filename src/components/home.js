@@ -9,6 +9,9 @@ const Home = ({ user }) => (
     {user ? (
       <>
         <h2>Welcome!</h2>
+        <p>Click here to view your routines </p>  
+        <Link to="/my-routines">My Routines</Link>
+        
       </>
     ) : (
       <>
