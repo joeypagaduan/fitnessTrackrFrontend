@@ -9,11 +9,11 @@ import {
   Register,
   Login,
   AddActivity,
-} from "./components"
+  Routines,
+} from './components';
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
-
   const [token, setToken] = useState(localStorage.getItem('token') ?? '');
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
@@ -21,34 +21,36 @@ const App = () => {
 
   const getActivities = async () => {
     const data = await callAPI({
-      path: "/activities", token
-    })
+      path: '/activities',
+      token,
+    });
 
     if (data?.activities) {
       setActivities(data.activities);
     }
-  }
+  };
 
   useEffect(() => {
-    //fetch the user and call set user. 
+    //fetch the user and call set user.
 
-    const fetchUser = async () => {
-      try {
-        const response = await getUser(token);
-        if (response && response.data && response.data.user) {
-          setUser(response.data.user);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchUser();
+    // const fetchUser = async () => {
+    //   try {
+    //     const response = await getUser(token);
+    //     if (response && response.data && response.data.user) {
+    //       setUser(response.data.user);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching user data:', error);
+    //   }
+    // };
+    //fetchUser();
     getActivities();
   }, [token]);
 
   // stay logged in between page visits
-  useEffect(() => {localStorage.setItem('token', token )},
-  [token]);
+  useEffect(() => {
+    localStorage.setItem('token', token);
+  }, [token]);
 
   const handleLogout = () => {
     setToken('');
@@ -56,41 +58,49 @@ const App = () => {
   };
 
   return (
-    <div className='app'>
-      <nav className='navbar'>
-        <Link to='/'>Home</Link>
-        <Link to='/activities'>Activities</Link>
-        <Link to='/routines'>Routines</Link>
-        <Link to='/my-routines'>My Routines</Link>
+    <div className="app">
+      <nav className="navbar">
+        <Link to="/">Home</Link>
+        <Link to="/activities">Activities</Link>
+        <Link to="/routines">Routines</Link>
+        <Link to="/my-routines">My Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
       <Router>
         <Switch>
-          <Route exact path='/' render={(props) => (
-            <Home user={user} />
-          )}>
-          </Route>
-          <Route path='/activities' render={(props) => (
-            <ViewActivities />
-          )}>
-          </Route>
+          <Route
+            exact
+            path="/"
+            render={(props) => <Home user={user} />}
+          ></Route>
+          <Route
+            path="/activities"
+            render={(props) => <ViewActivities />}
+          ></Route>
           {!token ? (
-            <Route path='/users/register'>
+            <Route path="/users/register">
               <Register setToken={setToken} />
             </Route>
           ) : null}
 
           {!token && (
-            <Route path='/users/login'>
-              <Login login={Login} setToken={setToken} token={token} setUser = {setUser}/>
+            <Route path="/users/login">
+              <Login
+                login={Login}
+                setToken={setToken}
+                token={token}
+                setUser={setUser}
+              />
             </Route>
           )}
-          
-         {/* link to addActivity  */}
-         
-          <Route exact path='/addActivity' render={(props) => (
-            <AddActivity token={token} />
-          )}></Route>
+
+          {/* link to addActivity  */}
+
+          <Route
+            exact
+            path="/addActivity"
+            render={(props) => <AddActivity token={token} />}
+          ></Route>
           {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
@@ -98,15 +108,12 @@ const App = () => {
                     activities={activities} 
                 />
               </Route> */}
-          {/* <Route path='/routines' render={(props) => (
-                    <ViewRoutines />
-                )}>
-                </Route> */}
+          <Route path="/routines" render={(props) => <Routines />}></Route>
         </Switch>
       </Router>
     </div>
-  )
-}
+  );
+};
 
 const rootEl = document.getElementById('app');
 const root = ReactDOMClient.createRoot(rootEl);
@@ -114,4 +121,5 @@ const root = ReactDOMClient.createRoot(rootEl);
 root.render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>)
+  </BrowserRouter>
+);
