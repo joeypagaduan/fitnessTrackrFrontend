@@ -1,5 +1,17 @@
-/* .error-message {
-    color: red;
-    font-weight: bold;
-  } */
+.error-message {
+    color: #dd3927;
+    margin-top: 8px;
+    font-size: 14px;
+  }
 
+.activity-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  
+  .activity-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+  }

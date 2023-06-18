@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api';
+import { useHistory } from 'react-router-dom';
 
 const Register = ({ setToken, token }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [error, setError] = useState('');
+  const history = useHistory()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
+    
     if (password !== passwordConfirmation) {
-      console.error("Password and password confirmation don't match");
+      setError("Password and password confirmation don't match");
       return;
     }
-    const response = await registerUser(username, password, token);
-    if (response && response.data && response.data.token) {
-      setToken(response.data.token);
+
+    try {
+      const response = await registerUser(username, password);
+      
+      if (response.error === "A user by that username already exists") {
+        setError('Username already exists. Please choose a different username.');
+      } else if (response.token) {
+        setToken(response.token);
+        history.push('/');
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -54,6 +68,7 @@ const Register = ({ setToken, token }) => {
         />
       </div>
       <button type="submit">Register</button>
+      {error && <p className="error-message">{error}</p>}
     </form>
   );
 };

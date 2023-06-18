@@ -6,85 +6,104 @@ import { callAPI, myData } from './api';
 import {
   Home,
   ViewActivities,
-  Register, 
+  Register,
   Login,
+  AddActivity,
 } from "./components"
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
 
-  const [token, setToken] = useState(localStorage.getItem('token')??'');
+  const [token, setToken] = useState(localStorage.getItem('token') ?? '');
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [error, setError] = useState('');
 
   const getActivities = async () => {
     const data = await callAPI({
-        path: "/activities", token
+      path: "/activities", token
     })
 
     if (data?.activities) {
-        setActivities(data.activities);
+      setActivities(data.activities);
     }
-}
+  }
 
-useEffect(() => {
+  useEffect(() => {
+    //fetch the user and call set user. 
+
+    const fetchUser = async () => {
+      try {
+        const response = await getUser(token);
+        if (response && response.data && response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUser();
     getActivities();
-}, [token]);
+  }, [token]);
 
-const handleLogout = () => {
-  setToken('');
-  setUser(null);
-};
+  // stay logged in between page visits
+  useEffect(() => {localStorage.setItem('token', token )},
+  [token]);
+
+  const handleLogout = () => {
+    setToken('');
+    setUser(null);
+  };
 
   return (
     <div className='app'>
-    <nav className='navbar'>
+      <nav className='navbar'>
         <Link to='/'>Home</Link>
         <Link to='/activities'>Activities</Link>
         <Link to='/routines'>Routines</Link>
         <Link to='/my-routines'>My Routines</Link>
-        
-        {/* {token ? (
-          <button onClick={handleLogout}>Logout</button>
-        ) : (
-          <>
-            <Link to='/users/register'>Register</Link>
-            <Link to='/users/login'>Login</Link>
-          </>
-        )} */}
-            
-        </nav>
-        <Router>
-            <Switch>
-              <Route exact path='/' render={(props) => (
-                  <Home />
-              )}>
-              </Route>
-              <Route path='/activities' render={(props) => (
-                  <ViewActivities />
-              )}>
-              </Route>
-              <Route path='/users/register' render={(props) => (
-                  <Register setToken={setToken} />
-              )}>
-              </Route>
-              <Route path='/users/login' render={(props) => (
-                  <Login login={Login} setToken={setToken} token={token}/>
-              )}>
-              </Route>
-              {/* <Route path="/activities/:post_Id">
+        {token && <button onClick={handleLogout}>Logout</button>}
+      </nav>
+      <Router>
+        <Switch>
+          <Route exact path='/' render={(props) => (
+            <Home user={user} />
+          )}>
+          </Route>
+          <Route path='/activities' render={(props) => (
+            <ViewActivities />
+          )}>
+          </Route>
+          {!token ? (
+            <Route path='/users/register'>
+              <Register setToken={setToken} />
+            </Route>
+          ) : null}
+
+          {!token && (
+            <Route path='/users/login'>
+              <Login login={Login} setToken={setToken} token={token} setUser = {setUser}/>
+            </Route>
+          )}
+          
+         {/* link to addActivity  */}
+         
+          <Route exact path='/addActivity' render={(props) => (
+            <AddActivity token={token} />
+          )}></Route>
+          {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
                     token={token}
                     activities={activities} 
                 />
               </Route> */}
-                {/* <Route path='/routines' render={(props) => (
+          {/* <Route path='/routines' render={(props) => (
                     <ViewRoutines />
                 )}>
                 </Route> */}
-            </Switch>
-        </Router>
+        </Switch>
+      </Router>
     </div>
   )
 }
@@ -93,6 +112,6 @@ const rootEl = document.getElementById('app');
 const root = ReactDOMClient.createRoot(rootEl);
 
 root.render(
-<BrowserRouter>
-  <App />
-</BrowserRouter>)
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>)
