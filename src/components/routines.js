@@ -8,8 +8,12 @@ const Routines = ({ token }) => {
   const [goal, setGoal] = useState('');
   const [isPublic, setIsPublic] = useState(true);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log(`Token ${token}`);
     createRoutine(token, { name, goal, isPublic });
+    setRoutines(await getAllPublicRoutines());
+    setName('');
+    setGoal('');
   };
 
   useEffect(() => {
