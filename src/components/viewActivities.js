@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getActivities } from "../api";
 import { Link } from 'react-router-dom';
 
+
+
 const ViewActivities = ({props, token}) => {
     const [activities, setActivities] = useState([]);
 
@@ -9,7 +11,7 @@ const ViewActivities = ({props, token}) => {
         try {
             Promise.all([getActivities()])
                 .then(([data]) => {
-                    setActivities(data)
+                    setActivities(data) 
                 })
         } catch (error) {
             console.log(error);

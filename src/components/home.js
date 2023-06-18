@@ -8,8 +8,7 @@ const Home = ({ user }) => (
     <h1>Fitness Track.r</h1>
     {user ? (
       <>
-        <p>Welcome {user.username}!</p>
-       
+        <h2>Welcome!</h2>
       </>
     ) : (
       <>
