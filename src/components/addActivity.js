@@ -5,20 +5,25 @@ import { callAPI } from '../api';
 const AddActivity = ({token, getActivities}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [error, setError] = useState('');
 
+    
+    
     const AddActivity = async (event) => {
         event.preventDefault();
 
+
+        
         const activity = await callAPI({
             path: '/activities',
             method: "post",
             token,
             body: {
-                    name,
-                    description
+                name,
+                description
             }
         });
-
+        
         if (activity) {
             setName('');
             setDescription('');
@@ -46,6 +51,9 @@ const AddActivity = ({token, getActivities}) => {
                     onChange={event => setDescription(event.target.value)}
                     value={description}
                 />
+
+                {error && <p>{error}</p>}
+
 
                 <button type="submit">Submit</button>
             <hr/>
