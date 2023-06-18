@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { callAPI } from '../api';
 
 const AddActivity = ({token, getActivities}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState('');
 
-    
-    
-    const AddActivity = async (event) => {
+    const history = useHistory();
+
+    const addActivity = async (event) => {
         event.preventDefault();
 
 
@@ -28,13 +28,14 @@ const AddActivity = ({token, getActivities}) => {
             setName('');
             setDescription('');
             await getActivities();
+            history.push('/activities');
         }
     }
 
     return (
         <>
             <h2>Add a New Activity</h2>
-            <form onSubmit={AddActivity} id="addAnActivity">
+            <form onSubmit={addActivity} id="addAnActivity">
 
                 <label htmlFor="title">Name</label>
                 <input
@@ -52,7 +53,6 @@ const AddActivity = ({token, getActivities}) => {
                     value={description}
                 />
 
-                {error && <p>{error}</p>}
 
 
                 <button type="submit">Submit</button>

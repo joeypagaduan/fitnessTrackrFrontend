@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, useHistory } from 'react-router-dom';
 import { callAPI, login, myData } from './api';
 
 
