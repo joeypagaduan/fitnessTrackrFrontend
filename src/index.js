@@ -37,8 +37,7 @@ const App = () => {
       try {
         const response = await setUser(token);
         if (response && response.data && response.data.user) {
-          setUser(response.data.user);
-         
+          setUser(response.data.user); 
         }
       } catch (error) {
         console.error('Error fetching user data:', error);

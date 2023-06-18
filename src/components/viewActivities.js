@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getActivities } from "../api";
 import { Link } from 'react-router-dom';
 
-const ViewActivities = (props) => {
+const ViewActivities = ({props, token}) => {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -18,6 +18,7 @@ const ViewActivities = (props) => {
 
     return (
         <div>
+            {token && <AddActivity token={token} getActivities={getActivities} /> }
             <h1>Activities</h1>
             {/* addActivity to be viewed */}
             <Link to="/addActivity">Add Activity</Link>
