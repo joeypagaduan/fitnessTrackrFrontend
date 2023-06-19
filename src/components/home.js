@@ -23,7 +23,7 @@ const Home = ({ user }) => (
     )}
  
     <div id="welcomeUser">
-      <img src="./images/fitness_logo.png" alt="Fitness Track.r Logo" id="logo" />
+      <img src="./images/fitness_logo.png" alt="Fitness Track.r Logo" id="logo"/>
     </div>
   </>
   
