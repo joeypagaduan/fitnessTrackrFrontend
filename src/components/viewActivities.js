@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getActivities } from "../api";
 import { Link } from 'react-router-dom';
+import AddActivity from './addActivity';
 
 
 
-const ViewActivities = ({props, token}) => {
+const ViewActivities = ({ token }) => {
     const [activities, setActivities] = useState([]);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ const ViewActivities = ({props, token}) => {
     }, [])
 
     return (
-        <div>
+        <>
             {token && <AddActivity token={token} getActivities={getActivities} /> }
             <h1>Activities</h1>
             {/* addActivity to be viewed */}
@@ -36,8 +37,8 @@ const ViewActivities = ({props, token}) => {
                 )
             })}
             </div>
-        </div>
-    )
+        </>
+    );
 }
 
 export default ViewActivities;

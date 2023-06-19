@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, useHistory } from 'react-router-dom';
 import { callAPI, login, myData } from './api';
 
 
@@ -12,13 +12,13 @@ import {
   AddActivity,
   Routines,
 } from './components';
-import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') ?? '');
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState('');
+  const history = useHistory();
 
   const getActivities = async () => {
     const data = await callAPI({
@@ -57,6 +57,7 @@ const App = () => {
   const handleLogout = () => {
     setToken('');
     setUser(null);
+    history.push('/');
   };
 
   return (
@@ -67,11 +68,9 @@ const App = () => {
         <Link to="/routines">Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
-      <Router>
-        <Switch>
+
           <Route
-            exact
-            path="/"
+            exact path="/"
             render={(props) => <Home user={user} />}
           ></Route>
           <Route
@@ -112,17 +111,10 @@ const App = () => {
                 />
               </Route> */}
           <Route path="/routines" render={(props) => <Routines />}></Route>
-        </Switch>
-      </Router>
     </div>
   );
 };
 
 const rootEl = document.getElementById('app');
 const root = ReactDOMClient.createRoot(rootEl);
-
-root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
+root.render(<Router><App /></Router>);
