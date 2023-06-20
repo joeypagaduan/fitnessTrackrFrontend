@@ -343,9 +343,11 @@ export const callAPI = async({path, method, body, token}) => {
             getURL(path),
             getOptions(method, body, token),
         );
+        console.log("result: ", result);
         const response = await result.json();
+        console.log(response);
         if (response.error) throw response.error;
-        return response?.data;
+        return response;
     } catch(e) {
         console.error(e);
     }

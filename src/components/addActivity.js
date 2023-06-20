@@ -23,17 +23,17 @@ const AddActivity = ({token, getActivities}) => {
                 description
             }
         });
+        console.log(activity);
         try {
             if (activity) {
                 setName('');
                 setDescription('');
-                await getActivities();
                 history.push('/activities');
             } else {
                 setError('Error! This activity already exists.');
             }
         } catch (error) {
-            setError('Error! This activity already exists.');
+            setError(error.message);
         }}
 
     return (
