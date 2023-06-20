@@ -56,6 +56,7 @@ const AddActivity = ({token, getActivities}) => {
 
 
                 <button type="submit">Submit</button>
+                {error && <p className="error-message">{error}</p>}
             <hr/>
             </form>
         </>
