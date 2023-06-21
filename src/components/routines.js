@@ -25,7 +25,7 @@ const Routines = ({ token }) => {
 
   return (
     <>
-      <h2>Routines</h2>
+      <h1>Routines</h1>
 
       <form
         onSubmit={(e) => {

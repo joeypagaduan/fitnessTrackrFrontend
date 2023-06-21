@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
-import { callAPI, myData } from './api';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom';
+import { callAPI, login, myData } from './api';
 
 import {
   Home,
@@ -18,6 +23,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState('');
+  const history = useHistory();
 
   const getActivities = async () => {
     const data = await callAPI({
@@ -33,17 +39,18 @@ const App = () => {
   useEffect(() => {
     //fetch the user and call set user.
 
-    // const fetchUser = async () => {
-    //   try {
-    //     const response = await getUser(token);
-    //     if (response && response.data && response.data.user) {
-    //       setUser(response.data.user);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching user data:', error);
-    //   }
-    // };
-    //fetchUser();
+    const fetchUser = async () => {
+      try {
+        const response = await setUser(token);
+        if (response && response.data && response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
     getActivities();
   }, [token]);
 
@@ -55,6 +62,7 @@ const App = () => {
   const handleLogout = () => {
     setToken('');
     setUser(null);
+    history.push('/');
   };
 
   return (
@@ -77,7 +85,6 @@ const App = () => {
             <Register setToken={setToken} />
           </Route>
         ) : null}
-
         {!token && (
           <Route path="/users/login">
             <Login
@@ -90,13 +97,13 @@ const App = () => {
         )}
 
         {/* link to addActivity  */}
-
         <Route
           exact
           path="/addActivity"
           render={(props) => <AddActivity token={token} />}
         ></Route>
         {/* <Route path="/activities/:post_Id">
+
                 <ActivityPage
                     ViewActivities={ViewActivities}
                     token={token}
@@ -118,9 +125,8 @@ const App = () => {
 
 const rootEl = document.getElementById('app');
 const root = ReactDOMClient.createRoot(rootEl);
-
 root.render(
-  <BrowserRouter>
+  <Router>
     <App />
-  </BrowserRouter>
+  </Router>
 );
