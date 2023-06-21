@@ -71,10 +71,9 @@ const App = () => {
         <Link to="/">Home</Link>
         <Link to="/activities">Activities</Link>
         <Link to="/routines">Routines</Link>
-        <Link to="/myroutines">My Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
-      <Switch>
+      {/* <Switch> */}
         <Route exact path="/" render={(props) => <Home user={user} />}></Route>
         <Route
           path="/activities"
@@ -118,7 +117,7 @@ const App = () => {
           path="/myroutines"
           render={(props) => <MyRoutines token={token} />}
         ></Route>
-      </Switch>
+      {/* </Switch> */}
     </div>
   );
 };
