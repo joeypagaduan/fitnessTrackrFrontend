@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { BrowserRouter as Router, Route, Link, useHistory } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom';
 import { callAPI, login, myData } from './api';
-
 
 import {
   Home,
@@ -11,6 +15,7 @@ import {
   Login,
   AddActivity,
   Routines,
+  MyRoutines,
 } from './components';
 
 const App = () => {
@@ -66,55 +71,62 @@ const App = () => {
         <Link to="/">Home</Link>
         <Link to="/activities">Activities</Link>
         <Link to="/routines">Routines</Link>
+        <Link to="/myroutines">My Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
+      <Switch>
+        <Route exact path="/" render={(props) => <Home user={user} />}></Route>
+        <Route
+          path="/activities"
+          render={(props) => <ViewActivities />}
+        ></Route>
+        {!token ? (
+          <Route path="/users/register">
+            <Register setToken={setToken} />
+          </Route>
+        ) : null}
+        {!token && (
+          <Route path="/users/login">
+            <Login
+              login={Login}
+              setToken={setToken}
+              token={token}
+              setUser={setUser}
+            />
+          </Route>
+        )}
 
-          <Route
-            exact path="/"
-            render={(props) => <Home user={user} />}
-          ></Route>
-          <Route
-            path="/activities"
-            render={(props) => <ViewActivities />}
-          ></Route>
+        {/* link to addActivity  */}
+        <Route
+          exact
+          path="/addActivity"
+          render={(props) => <AddActivity token={token} />}
+        ></Route>
+        {/* <Route path="/activities/:post_Id">
 
-          {!token ? (
-            <Route path="/users/register">
-              <Register setToken={setToken} />
-            </Route>
-          ) : null}
-
-          {!token && (
-            <Route path="/users/login">
-              <Login
-                login={Login}
-                setToken={setToken}
-                token={token}
-                setUser={setUser}
-              />
-            </Route>
-          )}
-
-          {/* link to addActivity  */}
-
-          <Route
-            exact
-            path="/addActivity"
-            render={(props) => <AddActivity token={token} />}
-          ></Route>
-
-          {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
                     token={token}
                     activities={activities} 
                 />
               </Route> */}
-          <Route path="/routines" render={(props) => <Routines />}></Route>
+        <Route
+          path="/routines"
+          render={(props) => <Routines token={token} />}
+        ></Route>
+        <Route
+          path="/myroutines"
+          render={(props) => <MyRoutines token={token} />}
+        ></Route>
+      </Switch>
     </div>
   );
 };
 
 const rootEl = document.getElementById('app');
 const root = ReactDOMClient.createRoot(rootEl);
-root.render(<Router><App /></Router>);
+root.render(
+  <Router>
+    <App />
+  </Router>
+);

@@ -6,12 +6,12 @@ import { callAPI } from '../api';
 const AddActivity = ({token, getActivities}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-
+    const [error, setError] = useState('');
     const history = useHistory();
 
     const addActivity = async (event) => {
         event.preventDefault();
-
+        setError(''); 
 
         
         const activity = await callAPI({
@@ -23,14 +23,18 @@ const AddActivity = ({token, getActivities}) => {
                 description
             }
         });
-        
-        if (activity) {
-            setName('');
-            setDescription('');
-            await getActivities();
-            history.push('/activities');
-        }
-    }
+        console.log(activity);
+        try {
+            if (activity) {
+                setName('');
+                setDescription('');
+                history.push('/activities');
+            } else {
+                setError('Error! This activity already exists.');
+            }
+        } catch (error) {
+            setError(error.message);
+        }}
 
     return (
         <>
@@ -56,6 +60,7 @@ const AddActivity = ({token, getActivities}) => {
 
 
                 <button type="submit">Submit</button>
+                {error && <p className="error-message">{error}</p>}
             <hr/>
             </form>
         </>
