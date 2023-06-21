@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import { callAPI, myData } from './api';
 
 import {
@@ -10,8 +10,8 @@ import {
   Login,
   AddActivity,
   Routines,
+  MyRoutines,
 } from './components';
-import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') ?? '');
@@ -63,54 +63,55 @@ const App = () => {
         <Link to="/">Home</Link>
         <Link to="/activities">Activities</Link>
         <Link to="/routines">Routines</Link>
-        <Link to="/my-routines">My Routines</Link>
+        <Link to="/myroutines">My Routines</Link>
         {token && <button onClick={handleLogout}>Logout</button>}
       </nav>
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => <Home user={user} />}
-          ></Route>
-          <Route
-            path="/activities"
-            render={(props) => <ViewActivities />}
-          ></Route>
-          {!token ? (
-            <Route path="/users/register">
-              <Register setToken={setToken} />
-            </Route>
-          ) : null}
+      <Switch>
+        <Route exact path="/" render={(props) => <Home user={user} />}></Route>
+        <Route
+          path="/activities"
+          render={(props) => <ViewActivities />}
+        ></Route>
+        {!token ? (
+          <Route path="/users/register">
+            <Register setToken={setToken} />
+          </Route>
+        ) : null}
 
-          {!token && (
-            <Route path="/users/login">
-              <Login
-                login={Login}
-                setToken={setToken}
-                token={token}
-                setUser={setUser}
-              />
-            </Route>
-          )}
+        {!token && (
+          <Route path="/users/login">
+            <Login
+              login={Login}
+              setToken={setToken}
+              token={token}
+              setUser={setUser}
+            />
+          </Route>
+        )}
 
-          {/* link to addActivity  */}
+        {/* link to addActivity  */}
 
-          <Route
-            exact
-            path="/addActivity"
-            render={(props) => <AddActivity token={token} />}
-          ></Route>
-          {/* <Route path="/activities/:post_Id">
+        <Route
+          exact
+          path="/addActivity"
+          render={(props) => <AddActivity token={token} />}
+        ></Route>
+        {/* <Route path="/activities/:post_Id">
                 <ActivityPage
                     ViewActivities={ViewActivities}
                     token={token}
                     activities={activities} 
                 />
               </Route> */}
-          <Route path="/routines" render={(props) => <Routines />}></Route>
-        </Switch>
-      </Router>
+        <Route
+          path="/routines"
+          render={(props) => <Routines token={token} />}
+        ></Route>
+        <Route
+          path="/myroutines"
+          render={(props) => <MyRoutines token={token} />}
+        ></Route>
+      </Switch>
     </div>
   );
 };
